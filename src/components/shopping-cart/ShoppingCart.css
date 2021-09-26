@@ -1,0 +1,14 @@
+.ShoppingCart {
+    font-family: 'Trebuchet MS', sans-serif;
+}
+
+input.cart-quantity::-webkit-outer-spin-button,
+input.cart-quantity::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input.cart-quantity[type=number] {
+    -moz-appearance: textfield;
+}
