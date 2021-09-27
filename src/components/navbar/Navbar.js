@@ -5,8 +5,6 @@ import ShoppingCart from "../shopping-cart/ShoppingCart";
 import CartHelper from "../../helper/CartHelper";
 import {Link} from "react-router-dom";
 import classNames from "../../helper/ClassNameJoiner";
-import {useDispatch} from "react-redux";
-import {OPEN_MODAL} from "../../state/action-types/modalActions";
 
 const navigationItems = [
     {name: 'Products', href: '#', path: '/', current: true},
@@ -15,7 +13,7 @@ const navigationItems = [
 ]
 
 const Navbar = () => {
-    const dispatch = useDispatch();
+    const [openModal, setOpenModal] = useState(false);
     const [navigation, setNavigation] = useState(navigationItems);
     const {getTotalNumOfItemAddedInCart} = CartHelper();
 
@@ -86,7 +84,7 @@ const Navbar = () => {
                                 {/*</button>*/}
 
                                 <span className="relative inline-block">
-                                    <button onClick={() => dispatch({type: OPEN_MODAL})}
+                                    <button onClick={() => setOpenModal(!openModal)}
                                             type="button">
                                         <svg className="w-6 h-6 text-gray-300 fill-current" viewBox="0 0 20 20"><path
                                             d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
@@ -106,7 +104,7 @@ const Navbar = () => {
 
                             </div>
 
-                            <ShoppingCart/>
+                            <ShoppingCart modal={{openModal, setOpenModal}}/>
 
                         </div>
                     </div>
