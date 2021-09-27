@@ -19,9 +19,12 @@ const productReducer = (state = initialState, action) => {
                 categoryList: action.categories,
             };
         case SET_PRODUCTS:
+            localStorage.setItem(keyProductList, JSON.stringify(action.products));
+            localStorage.setItem(keyCategoryList, JSON.stringify(action.categories));
             return {
                 ...state,
-                productList: action.payload
+                productList: action.products,
+                categoryList: action.categories,
             };
         case SET_FILTER_PRODUCTS:
             return {
@@ -29,6 +32,7 @@ const productReducer = (state = initialState, action) => {
                 filteredProducts: action.payload
             };
         case SET_CATEGORIES:
+            localStorage.setItem(keyCategoryList, JSON.stringify(action.categories));
             return {
                 ...state,
                 categoryList: action.payload

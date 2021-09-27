@@ -14,9 +14,11 @@ export const fetchProducts = async (dispatch) => {
 }
 
 export const setProducts = products => {
+    const categories = generateCategoryList(products);
     return {
         type: SET_PRODUCTS,
-        payload: products
+        products,
+        categories
     }
 }
 

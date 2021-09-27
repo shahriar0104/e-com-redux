@@ -2,7 +2,7 @@ import {
     ADD_TO_CART,
     CHANGE_QUANTITY,
     CLEAR_CART,
-    DEC_QUANTITY,
+    DEC_QUANTITY, ON_BLUR_QUANTITY,
     INC_QUANTITY,
     REMOVE_ITEM
 } from "../action-types/cartActionTypes";
@@ -31,6 +31,14 @@ export const decQuantity = cartItemKey => {
 export const changeQuantity = (cartItemKey, quantity) => {
     return {
         type: CHANGE_QUANTITY,
+        cartItemKey,
+        quantity
+    }
+}
+
+export const onBlurQuantity = (cartItemKey, quantity) => {
+    return {
+        type: ON_BLUR_QUANTITY,
         cartItemKey,
         quantity
     }

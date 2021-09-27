@@ -1,37 +1,23 @@
-import {Fragment, useEffect, useRef, useState} from "react";
+import {Fragment, useRef, useState} from "react";
 import {CheckIcon, MinusIcon, PlusIcon, SelectorIcon} from "@heroicons/react/outline";
 import {Listbox, Transition} from '@headlessui/react'
 import CartHelper from "../../helper/CartHelper";
 import {Link} from "react-router-dom";
 import classNames from "../../helper/ClassNameJoiner";
 import MyLoader from "../content-loader/MyLoader";
-// import useSetProducts from "../../hooks/useSetProducts";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchProducts, setFilterProducts} from "../../state/action/productActions";
-import {keyProductList} from "../../constants/keys";
+import {setFilterProducts} from "../../state/action/productActions";
 import {addToCart, decQuantity, incQuantity} from "../../state/action/cartActions";
+import useSetProducts from "../../hooks/useSetProducts";
 
 const ProductList = () => {
-    // const {loader} = useSetProducts();
-    const [loader, setLoader] = useState(false);
+    const {loader} = useSetProducts();
     const {isProductAvailable, isItemPresentInCart, getNumOfSpecificItemAddedInCart} = CartHelper();
     const [selectedCategory, setSelectedCategory] = useState('All');
     const inputSearchRef = useRef('');
-    const dispatch = useDispatch();
 
-    useEffect(() => {
-        async function fetchProductList() {
-            setLoader(true);
-            await dispatch(fetchProducts);
-        }
-        if (localStorage.getItem(keyProductList) === null) {
-            fetchProductList().then(() => setLoader(false));
-        }
-    }, []);
-    const {productList, filteredProducts, categoryList} = useSelector(state => {
-        // console.log(state.productReducer);
-        return state.productReducer
-    });
+    const dispatch = useDispatch();
+    const {productList, filteredProducts, categoryList} = useSelector(state => state.productReducer);
 
     const searchAndFilterProducts = (category) => {
         if (category !== undefined) setSelectedCategory(category);

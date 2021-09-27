@@ -7,6 +7,7 @@ import {Link} from "react-router-dom";
 import CartItemShow from "../cart-item-show/CartItemShow";
 import {useDispatch, useSelector} from "react-redux";
 import {OPEN_MODAL} from "../../state/action-types/modalActions";
+import {clearCart} from "../../state/action/cartActions";
 
 const ShoppingCart = () => {
     const dispatch = useDispatch();
@@ -15,7 +16,8 @@ const ShoppingCart = () => {
 
     return (
         <Transition.Root show={openModal} as={Fragment}>
-            <Dialog as="div" className="ShoppingCart fixed inset-0 z-20 overflow-hidden" onClose={() => dispatch({type: OPEN_MODAL})}>
+            <Dialog as="div" className="ShoppingCart fixed inset-0 z-20 overflow-hidden"
+                    onClose={() => dispatch({type: OPEN_MODAL})}>
                 <div className="absolute inset-0 overflow-hidden">
                     <Transition.Child
                         as={Fragment}
@@ -67,14 +69,23 @@ const ShoppingCart = () => {
                                         </div>
                                         <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at
                                             checkout.</p>
-                                        <Link to='/checkout'>
+                                        <div className="flex justify-between">
                                             <button
-                                                onClick={() => dispatch({type: OPEN_MODAL})}
-                                                className="w-full mt-4 flex justify-center items-center px-6 py-3 border border-transparent
-                                                rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
-                                                Checkout
+                                                onClick={() => dispatch(clearCart())}
+                                                className="mt-4 flex justify-center items-center px-6 py-3 border border-transparent
+                                                rounded-md shadow-sm text-base font-medium text-white bg-red-600 hover:bg-red-700">
+                                                Clear Cart
                                             </button>
-                                        </Link>
+
+                                            <Link to='/checkout'>
+                                                <button
+                                                    onClick={() => dispatch({type: OPEN_MODAL})}
+                                                    className="mt-4 flex justify-center items-center px-6 py-3 border border-transparent
+                                                rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
+                                                    Checkout
+                                                </button>
+                                            </Link>
+                                        </div>
                                         <div className="mt-6 flex justify-center text-sm text-center text-gray-500">
                                             <p>
                                                 or{' '}

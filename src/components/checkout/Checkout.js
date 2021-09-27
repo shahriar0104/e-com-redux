@@ -1,12 +1,12 @@
-import {useContext, useState} from "react";
-import {ShoppingListContext} from "../../context/ShoppingContext";
+import {useState} from "react";
 import {RadioGroup} from '@headlessui/react'
 import CartHelper from "../../helper/CartHelper";
 import {Redirect, useHistory} from "react-router-dom";
 import CartItemShow from "../cart-item-show/CartItemShow";
-import {keyCartItemList, keyCategoryList, keyProductList} from "../../constants/keys";
-import generateCategoryList from "../../helper/generateCategoryList";
 import InputField from "./InputField";
+import {useDispatch, useSelector} from "react-redux";
+import {clearCart} from "../../state/action/cartActions";
+import {setProducts} from "../../state/action/productActions";
 
 const methods = [
     {
@@ -37,12 +37,9 @@ function CheckIcon(props) {
 }
 
 const Checkout = () => {
-    const {
-        cartItemList,
-        setCartItemList,
-        productList,
-        setProductList,
-    } = useContext(ShoppingListContext);
+    const dispatch = useDispatch();
+    const productList = useSelector(state => state.productReducer.productList);
+    const cartItemList = useSelector(state => state.cartReducer.cartItemList);
     const {allItemPriceAddedInCart} = CartHelper();
     const [selected, setSelected] = useState(methods[0]);
     const [formFields, setFormFields] = useState(
@@ -81,11 +78,8 @@ const Checkout = () => {
     const setAfterOrderProducts = () => {
         const products = [...productList];
         cartItemList.forEach((value, key) => products[key - 1].rating['count'] -= value.quantity);
-        setCartItemList(new Map());
-        setProductList(products);
-        localStorage.removeItem(keyCartItemList);
-        localStorage.setItem(keyProductList, JSON.stringify(products));
-        localStorage.setItem(keyCategoryList, JSON.stringify(generateCategoryList(products)));
+        dispatch(clearCart());
+        dispatch(setProducts(products));
     }
 
     return (
