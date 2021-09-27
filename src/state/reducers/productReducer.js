@@ -1,26 +1,23 @@
 import {FETCH_PRODUCTS, SET_CATEGORIES, SET_FILTER_PRODUCTS, SET_PRODUCTS} from "../action-types/productActionTypes";
-import {keyCategoryList, keyProductList} from "../../constants/keys";
 
 const initialState = {
-    productList: localStorage.getItem(keyProductList) === null ? [] : JSON.parse(localStorage.getItem(keyProductList)),
-    filteredProducts: localStorage.getItem(keyProductList) === null ? [] : JSON.parse(localStorage.getItem(keyProductList)),
-    categoryList: localStorage.getItem(keyCategoryList) === null ? [] : JSON.parse(localStorage.getItem(keyCategoryList)),
+    fetched: false,
+    productList: [],
+    filteredProducts: [],
+    categoryList: [],
 }
 
 const productReducer = (state = initialState, action) => {
     switch (action.type) {
         case FETCH_PRODUCTS:
-            localStorage.setItem(keyProductList, JSON.stringify(action.products));
-            localStorage.setItem(keyCategoryList, JSON.stringify(action.categories));
             return {
                 ...state,
+                fetched: true,
                 productList: action.products,
                 filteredProducts: action.filteredProducts,
                 categoryList: action.categories,
             };
         case SET_PRODUCTS:
-            localStorage.setItem(keyProductList, JSON.stringify(action.products));
-            localStorage.setItem(keyCategoryList, JSON.stringify(action.categories));
             return {
                 ...state,
                 productList: action.products,
@@ -32,7 +29,6 @@ const productReducer = (state = initialState, action) => {
                 filteredProducts: action.payload
             };
         case SET_CATEGORIES:
-            localStorage.setItem(keyCategoryList, JSON.stringify(action.categories));
             return {
                 ...state,
                 categoryList: action.payload

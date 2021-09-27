@@ -1,20 +1,19 @@
 import {useEffect, useState} from "react";
-import {keyProductList} from "../constants/keys";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {fetchProducts} from "../state/action/productActions";
 
 
 const useSetProducts = () => {
     const [loader, setLoader] = useState(false);
-
     const dispatch = useDispatch();
+    const fetched = useSelector(state => state.productReducer.fetched);
 
     useEffect(() => {
         async function fetchProductList() {
             setLoader(true);
             await dispatch(fetchProducts);
         }
-        if (localStorage.getItem(keyProductList) === null) {
+        if (!fetched) {
             fetchProductList().then(() => setLoader(false));
         }
     }, []);

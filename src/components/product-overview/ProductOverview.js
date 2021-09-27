@@ -4,14 +4,14 @@ import {Link, useParams} from "react-router-dom";
 import CartHelper from "../../helper/CartHelper";
 import {MinusIcon, PlusIcon} from "@heroicons/react/outline";
 import classNames from "../../helper/ClassNameJoiner";
-import {keyProductList} from "../../constants/keys";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {addToCart, decQuantity, incQuantity} from "../../state/action/cartActions";
 
 const ProductOverview = () => {
     const {productId} = useParams();
+    const productList = useSelector(state => state.productReducer.productList);
     const setTheProduct = () => {
-        for (const el of JSON.parse(localStorage.getItem(keyProductList)))
+        for (const el of productList)
             if (el.id === Number(productId)) return el;
     }
     const [product] = useState(setTheProduct());
