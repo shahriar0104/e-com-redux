@@ -12,6 +12,7 @@ const useSetProducts = () => {
         async function fetchProductList() {
             setLoader(true);
             await dispatch(fetchProducts);
+            setLoader(false);
         }
         if (!fetched) {
             fetchProductList().then(() => setLoader(false));

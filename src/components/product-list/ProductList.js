@@ -6,21 +6,20 @@ import {Link} from "react-router-dom";
 import classNames from "../../helper/ClassNameJoiner";
 import MyLoader from "../content-loader/MyLoader";
 import {useDispatch, useSelector} from "react-redux";
-import {setFilterProducts} from "../../state/action/productActions";
+import {setCategory, setFilterProducts, setSearchText} from "../../state/action/productActions";
 import {addToCart, decQuantity, incQuantity} from "../../state/action/cartActions";
 import useSetProducts from "../../hooks/useSetProducts";
 
 const ProductList = () => {
     const {loader} = useSetProducts();
     const {isProductAvailable, isItemPresentInCart, getNumOfSpecificItemAddedInCart} = CartHelper();
-    const [selectedCategory, setSelectedCategory] = useState('All');
     const inputSearchRef = useRef('');
-
     const dispatch = useDispatch();
-    const {productList, filteredProducts, categoryList} = useSelector(state => state.productReducer);
+    const {productList, filteredProducts, categoryList, selectedCategory, searchText}
+        = useSelector(state => state.productReducer);
 
     const searchAndFilterProducts = (category) => {
-        if (category !== undefined) setSelectedCategory(category);
+        if (category !== undefined) dispatch(setCategory(category));
         else category = selectedCategory;
 
         let products = [];
@@ -31,6 +30,7 @@ const ProductList = () => {
                 else if (category === filteredProductsEl.category) products.push(filteredProductsEl);
         }
         dispatch(setFilterProducts(products));
+        dispatch(setSearchText(inputValue));
     }
 
     const textTransform = (text, search) => {
@@ -59,6 +59,7 @@ const ProductList = () => {
 
                     <div className="relative sm:col-start-1 sm:col-span-2">
                         <input ref={inputSearchRef}
+                               value={searchText}
                                onChange={() => searchAndFilterProducts()}
                                type="text"
                                className="w-full py-2 text-sm text-gray-700 bg-white rounded-md border-2 shadow-2xl pl-8

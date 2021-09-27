@@ -133,7 +133,7 @@ const CartItemShow = () => {
                               <div className="flex">
                                   <button type="button"
                                           onClick={() => dispatch(removeItem(cartItemKey))}
-                                          className="font-medium text-indigo-600 hover:text-indigo-500">
+                                          className="font-medium text-red-600 hover:text-red-500">
                                       Remove
                                   </button>
                               </div>

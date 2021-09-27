@@ -26,8 +26,7 @@ const ShoppingCart = () => {
                         enterTo="opacity-100"
                         leave="ease-in-out duration-500"
                         leaveFrom="opacity-100"
-                        leaveTo="opacity-0"
-                    >
+                        leaveTo="opacity-0">
                         <Dialog.Overlay className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity"/>
                     </Transition.Child>
 

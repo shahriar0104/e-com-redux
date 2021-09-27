@@ -1,10 +1,18 @@
-import {FETCH_PRODUCTS, SET_CATEGORIES, SET_FILTER_PRODUCTS, SET_PRODUCTS} from "../action-types/productActionTypes";
+import {
+    FETCH_PRODUCTS,
+    SET_CATEGORIES,
+    SET_CATEGORY,
+    SET_FILTER_PRODUCTS,
+    SET_PRODUCTS, SET_SEARCH_TEXT
+} from "../action-types/productActionTypes";
 
 const initialState = {
     fetched: false,
     productList: [],
     filteredProducts: [],
     categoryList: [],
+    selectedCategory: 'All',
+    searchText: '',
 }
 
 const productReducer = (state = initialState, action) => {
@@ -32,6 +40,16 @@ const productReducer = (state = initialState, action) => {
             return {
                 ...state,
                 categoryList: action.payload
+            };
+        case SET_CATEGORY:
+            return {
+                ...state,
+                selectedCategory: action.payload
+            };
+        case SET_SEARCH_TEXT:
+            return {
+                ...state,
+                searchText: action.payload
             };
         default:
             return state;
