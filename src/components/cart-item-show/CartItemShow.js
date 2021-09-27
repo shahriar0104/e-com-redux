@@ -1,16 +1,14 @@
 import classNames from "../../helper/ClassNameJoiner";
-import {useContext} from "react";
-import {ShoppingListContext} from "../../context/ShoppingContext";
 import CartHelper from "../../helper/CartHelper";
+import {useDispatch, useSelector} from "react-redux";
+import {changeQuantity, decQuantity, incQuantity, removeItem} from "../../state/action/cartActions";
 
 const CartItemShow = () => {
-    const {cartItemList} = useContext(ShoppingListContext);
+    const dispatch = useDispatch();
+    const cartItemList = useSelector(state => state.cartReducer.cartItemList);
     const {
-        updateCart,
-        removeItemFromCart,
         isProductAvailable,
         getNumOfSpecificItemAddedInCart,
-        onChangeQuantity,
     } = CartHelper();
 
   return (
@@ -48,13 +46,13 @@ const CartItemShow = () => {
                                          className="cart-quantity w-6/12 py-2 text-sm text-gray-900 bg-gray-200 rounded-md pl-2
                                                     focus:outline-none focus:bg-white focus:ring-indigo-500 focus:ring-2"
                                          value={cartItemList.get(cartItemKey).quantity}
-                                         onChange={event => onChangeQuantity(event, cartItemList.get(cartItemKey))}/>
+                                         onChange={event => dispatch(changeQuantity(cartItemKey, event.target.value))}/>
 
                                   <span className="absolute flex flex-col justify-center items-center inset-y-0 left-8 sm:left-10 lg:left-12 pl-2">
                                         <button disabled={!isProductAvailable(cartItemKey)}
                                                 onClick={(event) => {
                                                     event.preventDefault();
-                                                    updateCart(cartItemList.get(cartItemKey), true, true);
+                                                    dispatch(incQuantity(cartItemKey));
                                                 }}
                                                 // onClick={() => onChangeQuantity(Number(cartItem.quantity), cartItem, true, true)}
                                                 className={classNames(
@@ -75,7 +73,7 @@ const CartItemShow = () => {
                                         <button disabled={cartItemList.get(cartItemKey).quantity === 1}
                                                 onClick={(event) => {
                                                     event.preventDefault();
-                                                    updateCart(cartItemList.get(cartItemKey), true, false);
+                                                    dispatch(decQuantity(cartItemKey));
                                                 }}
                                                 // onClick={() => onChangeQuantity(Number(cartItem.quantity), cartItem, true,false)}
                                                 className={classNames(
@@ -97,7 +95,7 @@ const CartItemShow = () => {
 
                               <div className="flex">
                                   <button type="button"
-                                          onClick={() => removeItemFromCart(cartItemKey)}
+                                          onClick={() => dispatch(removeItem(cartItemKey))}
                                           className="font-medium text-indigo-600 hover:text-indigo-500">
                                       Remove
                                   </button>

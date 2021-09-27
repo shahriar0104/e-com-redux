@@ -1,19 +1,21 @@
-import {Fragment, useContext} from 'react'
+import {Fragment} from 'react'
 import {Dialog, Transition} from '@headlessui/react'
 import {XIcon} from '@heroicons/react/outline'
 import './ShoppingCart.css';
-import {ShoppingListContext} from "../../context/ShoppingContext";
 import CartHelper from "../../helper/CartHelper";
 import {Link} from "react-router-dom";
 import CartItemShow from "../cart-item-show/CartItemShow";
+import {useDispatch, useSelector} from "react-redux";
+import {OPEN_MODAL} from "../../state/action-types/modalActions";
 
 const ShoppingCart = () => {
-    const {openModal, setOpenModal} = useContext(ShoppingListContext);
+    const dispatch = useDispatch();
+    const openModal = useSelector(state => state.modalReducer.openModal);
     const {allItemPriceAddedInCart} = CartHelper();
 
     return (
         <Transition.Root show={openModal} as={Fragment}>
-            <Dialog as="div" className="ShoppingCart fixed inset-0 overflow-hidden" onClose={setOpenModal}>
+            <Dialog as="div" className="ShoppingCart fixed inset-0 z-20 overflow-hidden" onClose={() => dispatch({type: OPEN_MODAL})}>
                 <div className="absolute inset-0 overflow-hidden">
                     <Transition.Child
                         as={Fragment}
@@ -46,7 +48,7 @@ const ShoppingCart = () => {
                                                 <button
                                                     type="button"
                                                     className="-m-2 p-2 text-gray-400 hover:text-gray-500"
-                                                    onClick={() => setOpenModal(false)}>
+                                                    onClick={() => dispatch({type: OPEN_MODAL})}>
                                                     <span className="sr-only">Close panel</span>
                                                     <XIcon className="h-6 w-6" aria-hidden="true"/>
                                                 </button>
@@ -67,7 +69,7 @@ const ShoppingCart = () => {
                                             checkout.</p>
                                         <Link to='/checkout'>
                                             <button
-                                                onClick={() => setOpenModal(false)}
+                                                onClick={() => dispatch({type: OPEN_MODAL})}
                                                 className="w-full mt-4 flex justify-center items-center px-6 py-3 border border-transparent
                                                 rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
                                                 Checkout
@@ -80,7 +82,7 @@ const ShoppingCart = () => {
                                                     <button
                                                         type="button"
                                                         className="text-indigo-600 font-medium hover:text-indigo-500"
-                                                        onClick={() => setOpenModal(false)}>
+                                                        onClick={() => dispatch({type: OPEN_MODAL})}>
                                                         Continue Shopping<span aria-hidden="true"> &rarr;</span>
                                                     </button>
                                                 </Link>

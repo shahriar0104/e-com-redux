@@ -9,11 +9,12 @@ import MyLoader from "../content-loader/MyLoader";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchProducts, setFilterProducts} from "../../state/action/productActions";
 import {keyProductList} from "../../constants/keys";
+import {addToCart, decQuantity, incQuantity} from "../../state/action/cartActions";
 
 const ProductList = () => {
     // const {loader} = useSetProducts();
     const [loader, setLoader] = useState(false);
-    const {updateCart, isProductAvailable, isItemPresentInCart, getNumOfSpecificItemAddedInCart} = CartHelper();
+    const {isProductAvailable, isItemPresentInCart, getNumOfSpecificItemAddedInCart} = CartHelper();
     const [selectedCategory, setSelectedCategory] = useState('All');
     const inputSearchRef = useRef('');
     const dispatch = useDispatch();
@@ -28,7 +29,7 @@ const ProductList = () => {
         }
     }, []);
     const {productList, filteredProducts, categoryList} = useSelector(state => {
-        console.log(state.productReducer);
+        // console.log(state.productReducer);
         return state.productReducer
     });
 
@@ -201,7 +202,7 @@ const ProductList = () => {
                                         !isItemPresentInCart(product.id) ?
                                             (<div className="mt-auto">
                                                 <button
-                                                    onClick={() => updateCart(product, false, false)}
+                                                    onClick={() => dispatch(addToCart(product))}
                                                     // onClick={() => onChangeQuantity(1, product, false, true)}
                                                     className="flex justify-center items-center px-6 py-2 border border-transparent
                                                                w-full rounded-md shadow-sm text-base text-white
@@ -215,7 +216,7 @@ const ProductList = () => {
                                             rounded-md shadow-sm text-base text-gray-900 bg-gray-100">
                                                     <button
                                                         className="bg-indigo-700 text-white p-2 rounded-lg shadow-sm cursor-pointer"
-                                                        onClick={() => updateCart(product, true, false)}>
+                                                        onClick={() => dispatch(decQuantity(product.id))}>
                                                         <MinusIcon className="h-3 w-3" aria-hidden="true"/>
                                                     </button>
                                                     <span
@@ -225,7 +226,7 @@ const ProductList = () => {
                                                         'p-2 rounded-lg shadow-sm cursor-pointer'
                                                     )}
                                                             disabled={!isProductAvailable(product.id)}
-                                                            onClick={() => updateCart(product, true, true)}>
+                                                            onClick={() => dispatch(incQuantity(product.id))}>
                                                         <PlusIcon className="h-3 w-3" aria-hidden="true"/>
                                                     </button>
                                                 </div>

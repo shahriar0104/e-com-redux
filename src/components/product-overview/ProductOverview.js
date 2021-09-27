@@ -5,6 +5,8 @@ import CartHelper from "../../helper/CartHelper";
 import {MinusIcon, PlusIcon} from "@heroicons/react/outline";
 import classNames from "../../helper/ClassNameJoiner";
 import {keyProductList} from "../../constants/keys";
+import {useDispatch} from "react-redux";
+import {addToCart, decQuantity, incQuantity} from "../../state/action/cartActions";
 
 const ProductOverview = () => {
     const {productId} = useParams();
@@ -13,8 +15,8 @@ const ProductOverview = () => {
             if (el.id === Number(productId)) return el;
     }
     const [product] = useState(setTheProduct());
+    const dispatch = useDispatch();
     const {
-        updateCart,
         isProductAvailable,
         itemsLeft,
         isItemPresentInCart,
@@ -127,7 +129,7 @@ const ProductOverview = () => {
                                     !isItemPresentInCart(product.id) ?
                                         (<button
                                             type="submit"
-                                            onClick={() => updateCart(product, false, true)}
+                                            onClick={() => dispatch(addToCart(product))}
                                             className="mt-10 w-full bg-indigo-600 border border-transparent
                                         rounded-md py-3 px-8 flex items-center justify-center text-base
                                         font-medium text-white hover:bg-indigo-700 focus:outline-none
@@ -140,7 +142,7 @@ const ProductOverview = () => {
                                             rounded-md shadow-sm text-base font-medium text-gray-900 bg-gray-100">
                                                 <button
                                                     className="bg-indigo-700 text-white p-2 rounded-lg shadow-sm cursor-pointer"
-                                                    onClick={() => updateCart(product, true, false)}>
+                                                    onClick={() => dispatch(decQuantity(product.id))}>
                                                     <MinusIcon className="h-4 w-4" aria-hidden="true"/>
                                                 </button>
                                                 <span
@@ -150,7 +152,7 @@ const ProductOverview = () => {
                                                     'p-2 rounded-lg shadow-sm cursor-pointer'
                                                 )}
                                                         disabled={!isProductAvailable(product.id)}
-                                                        onClick={() => updateCart(product, true, true)}>
+                                                        onClick={() => dispatch(incQuantity(product.id))}>
                                                     <PlusIcon className="h-4 w-4" aria-hidden="true"/>
                                                 </button>
                                             </div>
