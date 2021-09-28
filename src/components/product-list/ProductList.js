@@ -1,4 +1,4 @@
-import {Fragment, useRef, useState} from "react";
+import {Fragment, useRef} from "react";
 import {CheckIcon, MinusIcon, PlusIcon, SelectorIcon} from "@heroicons/react/outline";
 import {Listbox, Transition} from '@headlessui/react'
 import CartHelper from "../../helper/CartHelper";
@@ -6,17 +6,17 @@ import {Link} from "react-router-dom";
 import classNames from "../../helper/ClassNameJoiner";
 import MyLoader from "../content-loader/MyLoader";
 import {useDispatch, useSelector} from "react-redux";
-import {setCategory, setFilterProducts, setSearchText} from "../../state/action/productActions";
+import {fetchProducts, setCategory, setFilterProducts, setSearchText} from "../../state/action/productActions";
 import {addToCart, decQuantity, incQuantity} from "../../state/action/cartActions";
-import useSetProducts from "../../hooks/useSetProducts";
 
 const ProductList = () => {
-    const {loader} = useSetProducts();
+    const dispatch = useDispatch();
+    const {fetched, productList, filteredProducts, categoryList, selectedCategory, searchText}
+        = useSelector(state => state.productReducer);
+    if (!fetched) dispatch(fetchProducts);
+
     const {isProductAvailable, isItemPresentInCart, getNumOfSpecificItemAddedInCart} = CartHelper();
     const inputSearchRef = useRef('');
-    const dispatch = useDispatch();
-    const {productList, filteredProducts, categoryList, selectedCategory, searchText}
-        = useSelector(state => state.productReducer);
 
     const searchAndFilterProducts = (category) => {
         if (category !== undefined) dispatch(setCategory(category));
@@ -53,7 +53,7 @@ const ProductList = () => {
         <div>
             <div className="max-w-2xl mx-auto py-4 px-2 sm:py-8 sm:px-4 lg:max-w-7xl lg:px-8">
 
-                {loader ? <MyLoader/> : null}
+                {!fetched ? <MyLoader/> : null}
 
                 <div className="mt-2 grid grid-cols-1 sm:grid-cols-6">
 
