@@ -4,6 +4,7 @@ import rootReducer from "../reducers/rootReducer";
 import {persistStore, persistReducer} from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import createTransform from "redux-persist/es/createTransform";
+import {composeWithDevTools} from "redux-devtools-extension";
 
 const mapTransformer = config =>
     createTransform(
@@ -26,5 +27,5 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 const enhancer = applyMiddleware(thunkMiddleware);
 
-export const store = createStore(persistedReducer, enhancer);
+export const store = createStore(persistedReducer, composeWithDevTools(enhancer));
 export const persistor = persistStore(store);
